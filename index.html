@@ -1,0 +1,2125 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>
+            Getting the Most out of AI Coding Agents — Claude Code &amp; Cursor
+        </title>
+        <meta
+            name="description"
+            content="A practical playbook for dev teams on Claude Code and Cursor."
+        />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='86'%3E%E2%96%A0%3C/text%3E%3C/svg%3E"
+        />
+
+        <!-- Fonts: Open Sans (text) + Anton (Impact fallback) + JetBrains Mono (code) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=Anton&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- reveal.js core (vendored, v6.0.1) -->
+        <link rel="stylesheet" href="vendor/reveal/reset.css" />
+        <link rel="stylesheet" href="vendor/reveal/reveal.css" />
+        <link
+            rel="stylesheet"
+            href="vendor/reveal/plugin/highlight/monokai.css"
+        />
+        <!-- custom Hash-brand theme (last so it wins) -->
+        <link rel="stylesheet" href="assets/css/style.css" />
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <!-- ============================ 1 · TITLE =========================== -->
+                <section
+                    class="title dark mid no-logo"
+                    data-background-color="#000000"
+                >
+                    <div class="eyebrow">9 June 2026</div>
+                    <h1 class="display">
+                        <span class="hl"
+                            >Getting the most out of AI coding agents</span
+                        >
+                    </h1>
+                    <p class="tsub">
+                        A practical playbook for shipping faster with Claude
+                        Code &amp; Cursor, the latest features, the mental
+                        models behind them, and how to adapt them well.
+                    </p>
+                    <div class="by">
+                        <span>Presented by</span> &nbsp;Hassan AL ACHEK
+                    </div>
+                    <aside class="notes">
+                        Today isn't "what are these tools" — it's how to get
+                        genuinely great results and how we roll them out as a
+                        team. Two tools, one shared mental model. Practical
+                        throughout; we end with a concrete adoption path.
+                    </aside>
+                </section>
+
+                <!-- ============================ 2 · AGENDA ========================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Agenda</span>
+                        <h2>What we'll cover</h2>
+                    </div>
+                    <div class="rows">
+                        <div class="row num fragment fade-up">
+                            <span class="rnum">1</span>
+                            <div class="rtext">
+                                <h3>The shift</h3>
+                                <p>
+                                    From autocomplete to autonomous agents, why
+                                    the workflow changed.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row num fragment fade-up">
+                            <span class="rnum">2</span>
+                            <div class="rtext">
+                                <h3>The mental model</h3>
+                                <p>
+                                    The one loop that makes every agent work,
+                                    and how to direct it.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row num fragment fade-up">
+                            <span class="rnum">3</span>
+                            <div class="rtext">
+                                <h3>Claude Code, in depth</h3>
+                                <p>
+                                    Terminal-first agent: setup, context,
+                                    sub-agents, hooks, MCP.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row num fragment fade-up">
+                            <span class="rnum">4</span>
+                            <div class="rtext">
+                                <h3>Cursor, in depth</h3>
+                                <p>
+                                    AI-native editor: Tab, Agent, rules, cloud
+                                    agents, review.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row num fragment fade-up">
+                            <span class="rnum">5</span>
+                            <div class="rtext">
+                                <h3>The team playbook</h3>
+                                <p>
+                                    When to use which, the transferable skills,
+                                    and a 30-day rollout.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Five beats. First two are conceptual and apply to any
+                        agent. The middle two are tool-specific deep dives. The
+                        last is the "what do we do Monday" section.
+                    </aside>
+                </section>
+
+                <!-- ============================ 3 · THE SHIFT ======================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">The shift</span>
+                        <h2>From autocomplete to agents</h2>
+                        <p class="sub">
+                            In a few short years, the unit of help went from a
+                            token, to a turn, to a whole task.
+                        </p>
+                    </div>
+                    <div class="stages">
+                        <div class="stage fragment">
+                            <div class="yr">~2021</div>
+                            <h3>Autocomplete</h3>
+                            <p>
+                                Predicts the next few lines. You drive
+                                everything else.
+                            </p>
+                        </div>
+                        <div class="stage-sep fragment">→</div>
+                        <div class="stage fragment">
+                            <div class="yr">~2023</div>
+                            <h3>Chat assistants</h3>
+                            <p>
+                                Ask &amp; paste. Good answers, you wire them in
+                                by hand.
+                            </p>
+                        </div>
+                        <div class="stage-sep fragment">→</div>
+                        <div class="stage on fragment">
+                            <div class="yr">2025–26</div>
+                            <h3>Coding agents</h3>
+                            <p>
+                                Read the repo, plan, edit many files, run
+                                commands, verify, iterate.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <p class="callout fragment">
+                        The agent now owns the <strong>loop</strong>, not just
+                        the keystroke, which is why how you <em>direct</em> it
+                        matters more than how fast you type.
+                    </p>
+                    <aside class="notes">
+                        The key transition is the third box: the model went from
+                        suggesting to acting and verifying. Our job shifts from
+                        typing code to directing an agent and reviewing its
+                        work.
+                    </aside>
+                </section>
+
+                <!-- ============================ 4 · THE LOOP ======================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">The mental model</span>
+                        <h2>Everything is one loop</h2>
+                        <p class="sub">
+                            Every good outcome comes from closing this loop, and
+                            the biggest lever is giving the agent a way to check
+                            its own work.
+                        </p>
+                    </div>
+                    <div class="loop">
+                        <div class="loop-node fragment fade-up">
+                            <div class="n">01</div>
+                            <h3>Gather context</h3>
+                            <p>Files, docs, tickets, errors</p>
+                        </div>
+                        <div class="loop-arrow fragment">→</div>
+                        <div class="loop-node fragment fade-up">
+                            <div class="n">02</div>
+                            <h3>Act</h3>
+                            <p>Edit code, run commands</p>
+                        </div>
+                        <div class="loop-arrow fragment">→</div>
+                        <div class="loop-node fragment fade-up">
+                            <div class="n">03</div>
+                            <h3>Verify</h3>
+                            <p>Tests, build, lint, screenshot</p>
+                        </div>
+                        <div class="loop-arrow fragment">→</div>
+                        <div class="loop-node fragment fade-up">
+                            <div class="n">04</div>
+                            <h3>Iterate</h3>
+                            <p>Read failures, fix, repeat</p>
+                        </div>
+                    </div>
+                    <p class="loop-caption fragment">
+                        The single highest-leverage move:
+                        <b>give it something to verify against</b>, tests, a
+                        build, a type-checker, a screenshot to diff. Then the
+                        loop closes on its own.
+                    </p>
+                    <aside class="notes">
+                        If you take one slide away, it's this. "Looks done" is a
+                        weak signal; "tests pass" is a strong one. When the
+                        agent can verify, it self-corrects instead of handing
+                        you broken code.
+                    </aside>
+                </section>
+
+                <!-- ============================ 5 · CONTEXT ========================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">The operating principle</span>
+                        <h2>Context is your budget</h2>
+                        <p class="sub">
+                            The context window is finite, and quality degrades
+                            as it fills. Managing it is the skill that separates
+                            "meh" from "magic."
+                        </p>
+                    </div>
+                    <div class="label">
+                        One finite context window — every token is budget
+                    </div>
+                    <div class="ctxbar">
+                        <div class="seg s1" style="width: 13%">
+                            CLAUDE.md<br />+ system
+                        </div>
+                        <div class="seg s2" style="width: 27%">
+                            Conversation
+                        </div>
+                        <div class="seg s3" style="width: 23%">File reads</div>
+                        <div class="seg s4" style="width: 15%">Tool output</div>
+                        <div class="seg free" style="width: 22%">
+                            free space
+                        </div>
+                    </div>
+                    <div class="ctxbar-legend">
+                        <span
+                            ><b>Spend it on signal</b> — the exact files, the
+                            ticket, the error to fix</span
+                        >
+                        <span
+                            ><b>Reclaim it often</b> — /clear · /compact ·
+                            sub-agents</span
+                        >
+                    </div>
+                    <div class="spacer lg"></div>
+                    <p class="callout fragment">
+                        Quality degrades as the bar fills. Almost every "pro"
+                        feature in both tools exists to help you
+                        <em>spend context well</em>.
+                    </p>
+                    <aside class="notes">
+                        Frame the rest of the talk: most advanced features
+                        (sub-agents, rules files, MCP, indexing) are really
+                        context-management tools.
+                    </aside>
+                </section>
+
+                <!-- ====================== 6 · DIVIDER: CLAUDE CODE ================== -->
+                <section
+                    class="divider dark mid"
+                    data-background-color="#000000"
+                >
+                    <div class="dnum">Part 01</div>
+                    <h2>Claude Code</h2>
+                    <div class="drule"></div>
+                    <p class="dsub">
+                        Anthropic's agentic coding tool, it lives in your
+                        terminal, IDE, and CI, and works across your whole
+                        codebase.
+                    </p>
+                    <aside class="notes">
+                        The tool we're standardizing on for terminal/CI work.
+                        Deep dive here, then the same for Cursor.
+                    </aside>
+                </section>
+
+                <!-- ============================ 7 · WHAT IT IS ====================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Claude Code · overview</span>
+                        <h2>An agent that works your whole repo</h2>
+                        <p class="sub">
+                            Describe a goal in plain language, it gathers
+                            context, acts, and verifies, looping until the work
+                            is actually done.
+                        </p>
+                    </div>
+                    <div class="flow">
+                        <div class="node is-soft">
+                            <div class="k">Input</div>
+                            <h3>Your goal</h3>
+                            <p>plain language</p>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-brand wide">
+                            <div class="k">The agent</div>
+                            <h3>A model, wielding tools, in a loop</h3>
+                            <div class="node-chips">
+                                <span>read</span><span>edit</span
+                                ><span>run shell &amp; git</span><span>web</span
+                                ><span>MCP</span>
+                            </div>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-soft">
+                            <div class="k">Output</div>
+                            <h3>Verified change</h3>
+                            <p>code + tests passing</p>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <div class="label">One engine — runs everywhere</div>
+                    <div class="tags">
+                        <span class="tag">Terminal CLI</span
+                        ><span class="tag">VS Code &amp; JetBrains</span>
+                        <span class="tag">Desktop</span
+                        ><span class="tag">Web</span><span class="tag">CI</span
+                        ><span class="tag">Slack</span>
+                    </div>
+                    <aside class="notes">
+                        Emphasize "agentic": it acts and checks, not just
+                        answers. The same CLAUDE.md and settings work across
+                        every surface.
+                    </aside>
+                </section>
+
+                <!-- ============================ 8 · WORKFLOW ======================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">The core workflow</span>
+                        <h2>Explore → Plan → Code → Commit</h2>
+                        <p class="sub">
+                            For anything non-trivial, separate
+                            <em>understanding</em> from <em>doing</em>. It stops
+                            the agent from confidently solving the wrong
+                            problem.
+                        </p>
+                    </div>
+                    <div class="loop">
+                        <div class="loop-node">
+                            <div class="n">01</div>
+                            <h3>Explore</h3>
+                            <p>
+                                Plan mode (<span class="kbd">⇧</span
+                                ><span class="kbd">Tab</span>), read-only.
+                                "Understand auth."
+                            </p>
+                        </div>
+                        <div class="loop-arrow">→</div>
+                        <div class="loop-node">
+                            <div class="n">02</div>
+                            <h3>Plan</h3>
+                            <p>
+                                "Draft a step-by-step plan for OAuth." Review
+                                &amp; refine.
+                            </p>
+                        </div>
+                        <div class="loop-arrow">→</div>
+                        <div class="loop-node">
+                            <div class="n">03</div>
+                            <h3>Code</h3>
+                            <p>
+                                Exit plan mode. It edits, runs tests, fixes
+                                failures.
+                            </p>
+                        </div>
+                        <div class="loop-arrow">→</div>
+                        <div class="loop-node">
+                            <div class="n">04</div>
+                            <h3>Commit</h3>
+                            <p>
+                                "Commit &amp; open a PR" with a clear message.
+                            </p>
+                        </div>
+                    </div>
+                    <p class="loop-caption">
+                        Wrong turn? <span class="kbd">Esc</span> to steer
+                        mid-flight, or <span class="kbd">Esc</span>
+                        <span class="kbd">Esc</span> / <code>/rewind</code> to a
+                        checkpoint, Claude snapshots before every edit.
+                    </p>
+                    <aside class="notes">
+                        For a one-line change, skip to code. For anything you'd
+                        struggle to describe in a sentence, plan first. Rewind
+                        means you can let it try risky things safely.
+                    </aside>
+                </section>
+
+                <!-- ============================ 9 · CLAUDE.md ======================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Set it up once</span>
+                        <h2>CLAUDE.md: your project's memory</h2>
+                        <p class="sub">
+                            A markdown file Claude reads at the start of every
+                            session. Commit it so the whole team, and every
+                            agent, shares the same context.
+                        </p>
+                    </div>
+                    <div class="cols w-46 vcenter">
+                        <div class="col">
+                            <div class="label">
+                                Scopes stack, all load · most specific wins
+                            </div>
+                            <div class="scopes">
+                                <div class="scope">
+                                    <span class="lvl">Enterprise</span
+                                    ><span class="path">managed policy</span>
+                                </div>
+                                <div class="scope e1">
+                                    <span class="lvl">User</span
+                                    ><span class="path"
+                                        >~/.claude/CLAUDE.md</span
+                                    >
+                                </div>
+                                <div class="scope e2">
+                                    <span class="lvl">Project</span
+                                    ><span class="path"
+                                        >./CLAUDE.md · in git</span
+                                    >
+                                </div>
+                                <div class="scope e3">
+                                    <span class="lvl">Local</span
+                                    ><span class="path">./CLAUDE.local.md</span>
+                                </div>
+                            </div>
+                            <p class="small muted" style="margin-top: 18px">
+                                Keep it under ~200 lines · run
+                                <code>/init</code> to start.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname">CLAUDE.md</span>
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-markdown">## Commands
+- Build: `pnpm build`
+- Test:  `pnpm test --run`
+- Lint:  `pnpm lint`
+
+## Conventions
+- TypeScript strict; never use `any`.
+- Co-locate tests as `*.test.ts`.
+
+## Gotchas
+- `apps/api` needs `DATABASE_URL`.
+- Never edit `generated/` by hand.</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Single highest-ROI setup step. A bloated file hurts —
+                        rules get lost in noise. Treat it like a living doc: hit
+                        a gotcha, add a line.
+                    </aside>
+                </section>
+
+                <!-- ========================= 9b · MEMORY ============================ -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Claude Code · memory</span>
+                        <h2>Memory persists, context does not</h2>
+                        <p class="sub">
+                            Context is the live working window for one session.
+                            Memory is the small set of files reloaded at the
+                            start of every session.
+                        </p>
+                    </div>
+                    <div class="memory">
+                        <div class="store">
+                            <span class="lbl">MEMORY</span>
+                            <span class="items"
+                                >CLAUDE.md (you write it) · MEMORY.md (Claude
+                                updates it as it learns)</span
+                            >
+                        </div>
+                        <div class="feed">
+                            reloaded at the start of every session
+                        </div>
+                        <div class="sessions">
+                            <div class="sess">
+                                <h4>Session 1</h4>
+                                <p>context fills, then you /clear</p>
+                            </div>
+                            <div class="sess">
+                                <h4>Session 2</h4>
+                                <p>fresh window, same memory</p>
+                            </div>
+                            <div class="sess">
+                                <h4>Session 3</h4>
+                                <p>starts smarter each time</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <p class="callout">
+                        Context is per session and disposable. Memory is small,
+                        persistent, and worth curating, because every future
+                        session reads it.
+                    </p>
+                    <aside class="notes">
+                        The distinction people miss: clearing context does not
+                        lose your project knowledge. That lives in memory and
+                        reloads next time. Keep CLAUDE.md tight and let
+                        MEMORY.md collect the hard-won lessons.
+                    </aside>
+                </section>
+
+                <!-- ====================== 10 · CONTEXT MANAGEMENT =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Spend context well</span>
+                        <h2>Manage the window deliberately</h2>
+                    </div>
+                    <div class="cards cols-4">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3><code>/clear</code></h3>
+                            <p>
+                                Reset between unrelated tasks. The biggest
+                                single win.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3><code>/compact</code></h3>
+                            <p>
+                                Summarize a long session, keeping code &amp;
+                                decisions.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3><code>/context</code></h3>
+                            <p>See exactly what's eating the window.</p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3><code>@file</code></h3>
+                            <p>Pull a specific file or path into the prompt.</p>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <div class="cols vcenter">
+                        <div class="col">
+                            <div class="label">Reclaim more space</div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Delegate to a sub-agent</h3>
+                                    <p>
+                                        Big investigations run in their own
+                                        window. Only the summary comes back.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>MCP tools load on demand</h3>
+                                    <p>
+                                        Tool definitions stay out of context
+                                        until a task needs them.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Import, do not paste</h3>
+                                    <p>
+                                        Reference long docs from CLAUDE.md
+                                        instead of pasting them in.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="label">What a /compact keeps</div>
+                            <div class="keepbox">
+                                <div class="keep">
+                                    <span class="tagk solid">Kept</span> code
+                                    changes, key decisions, and the commands you
+                                    ran.
+                                </div>
+                                <div class="keep">
+                                    <span class="tagk">Trimmed</span> verbose
+                                    tool output and early exploration.
+                                </div>
+                            </div>
+                            <p class="small muted" style="margin-top: 16px">
+                                Corrected Claude twice on the same thing? Do not
+                                push harder, run <code>/clear</code> and restart
+                                with a sharper prompt.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Long meandering sessions are where quality quietly
+                        drops. Clearing isn't losing progress — code and commits
+                        persist; you're dropping stale conversation.
+                    </aside>
+                </section>
+
+                <!-- ============================ 11 · SUB-AGENTS ===================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Scale without bloat</span>
+                        <h2>Sub-agents: delegate, keep your thread clean</h2>
+                    </div>
+                    <div class="delegate">
+                        <div class="main">
+                            <div class="k">Main session</div>
+                            <h3>Stays lean</h3>
+                            <p>
+                                You keep building, your context isn't flooded
+                                with raw files.
+                            </p>
+                        </div>
+                        <div class="pipe">
+                            <div class="ar">
+                                <div class="line">──▶</div>
+                                <span class="lab">delegate a task</span>
+                            </div>
+                            <div class="ar">
+                                <div class="line">◀──</div>
+                                <span class="lab">return a summary</span>
+                            </div>
+                        </div>
+                        <div class="subs">
+                            <div class="sub">
+                                <h4>Research</h4>
+                                <span class="badge">own context</span>
+                            </div>
+                            <div class="sub">
+                                <h4>Code review</h4>
+                                <span class="badge">own context</span>
+                            </div>
+                            <div class="sub">
+                                <h4>Security pass</h4>
+                                <span class="badge">own context</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="diagram-cap">
+                        Each sub-agent reads dozens of files in
+                        <b>its own fresh window</b> and reports back a short
+                        summary, so a 50-file investigation never bloats your
+                        main thread. Define reusable ones in
+                        <code>.claude/agents/*.md</code>.
+                    </p>
+                    <aside class="notes">
+                        Mental model: a 50-file investigation would blow up your
+                        main context. Send it to a sub-agent; get back the
+                        3-paragraph conclusion, not the 50 files.
+                    </aside>
+                </section>
+
+                <!-- ====================== 12 · SLASH COMMANDS & SKILLS ============== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Make it yours</span>
+                        <h2>Slash commands &amp; Skills</h2>
+                        <p class="sub">
+                            Built-ins cover the basics, <em>Skills</em> package
+                            your team's repeatable workflows behind a
+                            <code>/command</code>.
+                        </p>
+                    </div>
+                    <div class="cols w-46">
+                        <div class="col">
+                            <div class="label">A few built-ins</div>
+                            <div class="tags">
+                                <span class="tag plain">/init</span
+                                ><span class="tag plain">/plan</span
+                                ><span class="tag plain">/clear</span>
+                                <span class="tag plain">/context</span
+                                ><span class="tag plain">/model</span
+                                ><span class="tag plain">/review</span>
+                                <span class="tag plain">/security-review</span
+                                ><span class="tag plain">/rewind</span>
+                            </div>
+                            <div class="spacer lg"></div>
+                            <div class="label">
+                                A skill = a named, packaged workflow
+                            </div>
+                            <p class="small muted">
+                                Drop a <code>SKILL.md</code> in
+                                <code>.claude/skills/</code> and the whole team
+                                invokes it the same way.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname"
+                                        >.claude/skills/deploy-staging/SKILL.md</span
+                                    >
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-markdown">---
+description: Deploy to staging and smoke-test
+---
+1. Run `pnpm build`
+2. Push the `staging` branch
+3. Wait for CI to go green
+4. Hit `/healthz` and report status</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="flow skillflow">
+                        <div class="node is-soft">
+                            <div class="k">1 · Invoke</div>
+                            <h3>Type <code>/deploy-staging</code></h3>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-brand">
+                            <div class="k">2 · Load</div>
+                            <h3>Claude reads the SKILL.md</h3>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-soft">
+                            <div class="k">3 · Run</div>
+                            <h3>Runs the steps, reports back</h3>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Skills encode tribal knowledge, the deploy dance, the
+                        release checklist. Write once, the whole team invokes it
+                        the same way.
+                    </aside>
+                </section>
+
+                <!-- ===================== 12b · SKILLS IN DEPTH ====================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Claude Code · skills</span>
+                        <h2>Skills: package a workflow once</h2>
+                        <p class="sub">
+                            A skill is a small folder Claude loads only when it
+                            is relevant, so your team's know-how is reusable
+                            without sitting in context all the time.
+                        </p>
+                    </div>
+                    <div class="cols w-58 vcenter">
+                        <div class="col">
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Anatomy</h3>
+                                    <p>
+                                        A SKILL.md with frontmatter and
+                                        instructions, plus optional scripts,
+                                        templates, and reference files.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Loaded on demand</h3>
+                                    <p>
+                                        Only the short description stays in
+                                        context. The full skill loads when the
+                                        task matches, so the window stays lean.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Two ways to fire</h3>
+                                    <p>
+                                        Type <code>/the-skill</code> yourself,
+                                        or let Claude invoke it automatically by
+                                        context.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span>
+                                    <span class="fname"
+                                        >.claude/skills/deploy-staging/</span
+                                    >
+                                </div>
+                                <pre><code data-trim class="language-plaintext">deploy-staging/
+├─ SKILL.md          frontmatter + steps
+├─ scripts/
+│  └─ smoke-test.sh
+└─ templates/
+   └─ release-notes.md</code></pre>
+                            </div>
+                            <p class="small muted" style="margin-top: 14px">
+                                Share across the team in git, or bundle several
+                                into a plugin.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="spacer"></div>
+                    <p class="diagram-cap">
+                        Good skills to write first: deploys, release checklists,
+                        codegen patterns, review rubrics, and onboarding.
+                    </p>
+                    <aside class="notes">
+                        The pitch: anything you explain to a new hire more than
+                        once is a candidate for a skill. Progressive loading is
+                        the key idea, dozens of skills cost almost nothing until
+                        one is actually needed.
+                    </aside>
+                </section>
+
+                <!-- ================= 12c · SKILLS: LOADING & STATE ================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Claude Code · skills</span>
+                        <h2>Progressive loading, two flavors</h2>
+                        <p class="sub">
+                            You can keep dozens of skills around. Only their
+                            short descriptions sit in context until one is
+                            actually used.
+                        </p>
+                    </div>
+                    <div class="label">
+                        Progressive loading, pay only for what you use
+                    </div>
+                    <div class="flow">
+                        <div class="node is-soft">
+                            <div class="k">Always · tiny</div>
+                            <h3>Name + description</h3>
+                            <p>
+                                A few tokens. The model reads this to decide if
+                                the skill is relevant.
+                            </p>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-soft">
+                            <div class="k">On match</div>
+                            <h3>SKILL.md body</h3>
+                            <p>
+                                The full instructions load only when the task
+                                fits.
+                            </p>
+                        </div>
+                        <div class="conn">→</div>
+                        <div class="node is-brand">
+                            <div class="k">On demand</div>
+                            <h3>Scripts, templates, files</h3>
+                            <p>
+                                Read or run only when needed. A script can run
+                                without its source entering context.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <div class="cards cols-2">
+                        <div class="card">
+                            <span class="tagk solid">Stateless · prefer</span>
+                            <h3 style="margin-top: 12px">
+                                A self-contained recipe
+                            </h3>
+                            <p>
+                                Same input, same result, no side effects. Easy
+                                to share, test, and trust. For example: format a
+                                commit, scaffold from a template, run a
+                                checklist.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="tagk">Stateful · with care</span>
+                            <h3 style="margin-top: 12px">
+                                Touches state outside the run
+                            </h3>
+                            <p>
+                                Reads or writes files, a database, or a tracker,
+                                or carries progress across steps. Make side
+                                effects explicit, guard them with permissions,
+                                and keep them idempotent. For example: deploy,
+                                update a changelog, sync issues.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Progressive loading is why a big skill library is cheap,
+                        you only pay for the one in use. On state: reach for
+                        stateless by default, it is predictable and testable.
+                        When a skill must be stateful, make the side effects
+                        loud and gate them.
+                    </aside>
+                </section>
+
+                <!-- ============================ 13 · HOOKS ========================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Make it deterministic</span>
+                        <h2>Hooks: automate the guardrails</h2>
+                        <p class="sub">
+                            Run a script on lifecycle events, so the right thing
+                            happens <em>every</em> time, not just when the model
+                            remembers to.
+                        </p>
+                    </div>
+                    <div class="cols w-46 vcenter">
+                        <div class="col">
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>PostToolUse</h3>
+                                    <p>Auto-format or lint after every edit.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>PreToolUse</h3>
+                                    <p>
+                                        Block dangerous commands before they
+                                        run.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Stop / SessionStart</h3>
+                                    <p>Audit logs, notifications, env setup.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname"
+                                        >.claude/settings.json</span
+                                    >
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-json">{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "prettier --write $FILE_PATH"
+      }]
+    }]
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Hooks turn "please remember to format" into a guarantee.
+                        Deterministic guardrails are what make agents safe to
+                        run with looser permissions.
+                    </aside>
+                </section>
+
+                <!-- ============================ 14 · MCP ============================ -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Connect your stack</span>
+                        <h2>MCP, give Claude your real tools</h2>
+                        <p class="sub">
+                            The Model Context Protocol is an open standard for
+                            plugging agents into external systems. Stop
+                            copy-pasting, let Claude query the source.
+                        </p>
+                    </div>
+                    <div class="cards cols-4">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Issue trackers</h3>
+                            <p>
+                                "Implement ENG-4521", it reads the ticket
+                                itself.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Databases</h3>
+                            <p>Query Postgres for real, live data.</p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Observability</h3>
+                            <p>Pull Sentry / Datadog context into the fix.</p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Design &amp; docs</h3>
+                            <p>Figma, Notion, Drive, Slack, GitHub.</p>
+                        </div>
+                    </div>
+                    <p class="small muted" style="margin-top: 22px">
+                        Add a server with <code>claude mcp add</code>, or commit
+                        <code>.mcp.json</code> to share it with the team.
+                        Hundreds of community servers exist.
+                    </p>
+                    <aside class="notes">
+                        Same standard Cursor uses — learn it once. The win is
+                        fewer hops: read the ticket, query the DB, update the PR
+                        without you brokering data.
+                    </aside>
+                </section>
+
+                <!-- ====================== 15 · PERMISSIONS & SAFETY ================ -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Stay in control</span>
+                        <h2>Permissions &amp; safety</h2>
+                        <p class="sub">
+                            Tune how much Claude can do without asking, cut
+                            friction on safe actions, hard-block the dangerous
+                            ones.
+                        </p>
+                    </div>
+                    <div class="cols w-46 vcenter">
+                        <div class="col">
+                            <div class="label">
+                                Modes, cycle with <span class="kbd">⇧</span
+                                ><span class="kbd">Tab</span>
+                            </div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Plan</h3>
+                                    <p>Read-only exploration.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Default → Auto-accept edits</h3>
+                                    <p>
+                                        Prompt for each, or auto-approve edits.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Auto</h3>
+                                    <p>
+                                        Classifier approves routine work, blocks
+                                        escalation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname"
+                                        >.claude/settings.json</span
+                                    >
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-json">{
+  "permissions": {
+    "allow": ["Bash(pnpm test)", "Bash(git commit *)"],
+    "ask":   ["Edit(package.json)"],
+    "deny":  ["Bash(rm -rf *)"]
+  }
+}</code></pre>
+                            </div>
+                            <p class="tiny muted" style="margin-top: 12px">
+                                Evaluated <b>deny → ask → allow</b>. Add an
+                                OS-level sandbox for defense-in-depth.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Sweet spot: allowlist the safe, repetitive commands so
+                        you stop clicking "yes," and deny the destructive ones.
+                        Bypass mode is for isolated containers only.
+                    </aside>
+                </section>
+
+                <!-- ====================== 16 · MODELS & AUTOMATION ================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Match power to the task</span>
+                        <h2>Models, effort &amp; automation</h2>
+                    </div>
+                    <div class="cols vcenter">
+                        <div class="col">
+                            <div class="label">
+                                Pick a model with <code>/model</code>
+                            </div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Opus 4.8</h3>
+                                    <p>
+                                        Deepest reasoning, architecture, gnarly
+                                        bugs, planning.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Sonnet 4.6</h3>
+                                    <p>
+                                        The daily driver, fast and strong on
+                                        most coding.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Haiku 4.5</h3>
+                                    <p>
+                                        Cheap &amp; fast for simple, high-volume
+                                        tasks.
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="tiny muted" style="margin-top: 12px">
+                                <code>/effort</code> tunes thinking depth ·
+                                <code>[1m]</code> = 1M-token context ·
+                                <code>opusplan</code> plans on Opus, executes on
+                                Sonnet.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="label">
+                                Drive it headless, CI, scripts, bulk edits
+                            </div>
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname">ci.sh</span>
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-bash"># one-shot, non-interactive
+claude -p "run tests, fix failures" \
+  --allowedTools "Bash,Read,Edit"
+
+# structured output for pipelines
+claude -p "list API routes" \
+  --output-format json</code></pre>
+                            </div>
+                            <p class="tiny muted" style="margin-top: 12px">
+                                Or build custom agents with the
+                                <b>Claude Agent SDK</b> (Python / TypeScript).
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Don't default to the biggest model, Sonnet handles most
+                        day-to-day coding fast; reach for Opus on architecture
+                        and hard debugging. Headless mode is the gateway to CI.
+                    </aside>
+                </section>
+
+                <!-- ====================== 17 · WHAT'S NEW (CLAUDE) ================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Worth trying now</span>
+                        <h2>Newer in Claude Code</h2>
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Checkpoints &amp; rewind</h3>
+                            <p>
+                                Snapshots before every edit,
+                                <span class="kbd">Esc</span>
+                                <span class="kbd">Esc</span> to undo a risky
+                                attempt.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Background &amp; scheduled</h3>
+                            <p>
+                                Parallel sessions in one dashboard;
+                                <code>/schedule</code> cron jobs that run in the
+                                cloud.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Goal-led orchestration</h3>
+                            <p>
+                                Set a <code>/goal</code> and let Claude
+                                coordinate sub-agents toward it.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Plugins &amp; marketplaces</h3>
+                            <p>
+                                Share skills, agents, hooks &amp; LSP as
+                                installable packages.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3><code>/code-review --fix</code></h3>
+                            <p>
+                                Reviews <em>and</em> applies fixes; plus
+                                <code>/security-review</code>.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>LSP awareness</h3>
+                            <p>
+                                Sees real type errors after edits and fixes
+                                them.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        If folks already use Claude Code, these are the "go back
+                        and try this" items. Checkpoints change behavior — you
+                        let it attempt bigger, riskier changes.
+                    </aside>
+                </section>
+
+                <!-- ====================== 18 · DIVIDER: CURSOR ===================== -->
+                <section
+                    class="divider dark mid"
+                    data-background-color="#000000"
+                >
+                    <div class="dnum">Part 02</div>
+                    <h2>Cursor</h2>
+                    <div class="drule"></div>
+                    <p class="dsub">
+                        The AI-native editor, a VS Code fork by Anysphere with
+                        agents built into the editing loop.
+                    </p>
+                    <aside class="notes">
+                        Different shape, same principles. If you live in an
+                        editor and value tight, in-flow edits, this is home
+                        base.
+                    </aside>
+                </section>
+
+                <!-- ============================ 19 · WHAT IT IS ==================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Cursor · overview</span>
+                        <h2>Your editor, with agents built in</h2>
+                    </div>
+                    <div class="cols w-58 vcenter">
+                        <div class="col">
+                            <p class="lead">
+                                A fork of VS Code, same extensions, themes, and
+                                keybindings, with AI woven through every layer:
+                                completion, inline edits, and a full multi-file
+                                agent.
+                            </p>
+                            <div class="spacer"></div>
+                            <div class="tags">
+                                <span class="tag">VS Code-compatible</span>
+                                <span class="tag">Multi-model</span>
+                                <span class="tag">Codebase-aware</span>
+                                <span class="tag">macOS · Windows · Linux</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="label">Three ways to invoke AI</div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Tab</h3>
+                                    <p>Predicts your next edit as you type.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>
+                                        <span class="kbd">⌘</span
+                                        ><span class="kbd">K</span>, inline edit
+                                    </h3>
+                                    <p>A focused change on a selection.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>
+                                        Agent · <span class="kbd">⌘</span
+                                        ><span class="kbd">L</span>
+                                    </h3>
+                                    <p>
+                                        Multi-file: runs commands &amp; tests.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Because it's a VS Code fork, adoption is low-friction —
+                        your extensions and keybindings come with you. The
+                        differentiator is how deeply AI is wired into the edit
+                        loop.
+                    </aside>
+                </section>
+
+                <!-- ====================== 20 · TAB vs CMDK vs AGENT ================ -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Right tool, right moment</span>
+                        <h2>Tab vs ⌘K vs Agent</h2>
+                        <p class="sub">
+                            Reach for the smallest tool that fits, it keeps you
+                            in flow and keeps the diff reviewable.
+                        </p>
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Tab: in flow</h3>
+                            <p>
+                                Multi-line, next-edit prediction, auto-imports,
+                                jump-to-next-edit. Best while you're actively
+                                typing.
+                            </p>
+                            <span class="cmd">Tab to accept</span>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>⌘K: one spot</h3>
+                            <p>
+                                A focused change to a known selection, or a
+                                quick question about it. Single-file, surgical.
+                            </p>
+                            <span class="cmd">⌘K on a selection</span>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Agent: the task</h3>
+                            <p>
+                                Multi-file features &amp; refactors. Searches
+                                the repo, edits, runs commands, even drives a
+                                browser.
+                            </p>
+                            <span class="cmd">⌘L to open</span>
+                        </div>
+                    </div>
+                    <p class="small muted" style="margin-top: 22px">
+                        Not sure which files matter? Skip the @-mentions, Agent
+                        will search and find them itself.
+                    </p>
+                    <aside class="notes">
+                        The skill is escalation: stay on Tab while typing, pop
+                        ⌘K for a known tweak, only open the Agent for genuinely
+                        multi-file work.
+                    </aside>
+                </section>
+
+                <!-- ====================== 21 · PLAN MODE & COMPOSER =============== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Plan before it builds</span>
+                        <h2>Plan mode &amp; Composer</h2>
+                    </div>
+                    <div class="cols vcenter">
+                        <div class="col">
+                            <p class="lead tight">
+                                For big or ambiguous work, run
+                                <em>Plan</em> first: Cursor crawls the repo,
+                                asks clarifying questions, and writes an
+                                editable plan you approve
+                                <strong>before</strong> any code changes.
+                            </p>
+                            <div class="spacer"></div>
+                            <p class="callout">
+                                Same idea as Claude Code's plan mode, review the
+                                plan, then execute.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Composer: Cursor's own model</h3>
+                                    <p>
+                                        A fast, agentic coding model tuned for
+                                        long-horizon, multi-file tasks.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Checkpoints</h3>
+                                    <p>
+                                        Auto-snapshots you can restore without
+                                        touching git history.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Queued messages</h3>
+                                    <p>Line up follow-ups while it works.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Cross-tool theme: every serious agent now has a "plan
+                        first" mode because it improves outcomes on complex
+                        tasks. Composer is Cursor's in-house model optimized for
+                        agentic speed.
+                    </aside>
+                </section>
+
+                <!-- ============================ 22 · RULES ========================= -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Highest-leverage team setup</span>
+                        <h2>Rules: shared instructions for the agent</h2>
+                        <p class="sub">
+                            Version-controlled guidance the agent follows every
+                            time, Cursor's equivalent of CLAUDE.md.
+                        </p>
+                    </div>
+                    <div class="cols w-46 vcenter">
+                        <div class="col">
+                            <div class="rows">
+                                <div class="row">
+                                    <h3><code>.cursor/rules/*.mdc</code></h3>
+                                    <p>
+                                        Project rules, scoped by glob or applied
+                                        always.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3><code>AGENTS.md</code></h3>
+                                    <p>
+                                        Plain-markdown alternative; nest one per
+                                        directory.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>User &amp; Team rules</h3>
+                                    <p>
+                                        Personal prefs, org-wide standards from
+                                        the dashboard.
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="tiny muted" style="margin-top: 12px">
+                                Prefer small, glob-scoped rules over one giant
+                                always-on file.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="code-card">
+                                <div class="code-card__bar">
+                                    <span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="dot"></span
+                                    ><span class="fname"
+                                        >.cursor/rules/components.mdc</span
+                                    >
+                                </div>
+                                <pre><code data-trim data-line-numbers class="language-yaml">---
+description: React component standards
+globs: src/**/*.tsx
+alwaysApply: false
+---
+- Function components + hooks only.
+- Co-locate styles; no inline style props.
+- Every component gets a *.test.tsx.</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Note the convergence: both tools settle on committed,
+                        scoped instruction files (AGENTS.md is becoming a
+                        cross-tool convention). Glob-scoping keeps prompts lean.
+                    </aside>
+                </section>
+
+                <!-- ====================== 23 · CONTEXT IN CURSOR =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Feed it the right context</span>
+                        <h2>@-symbols, indexing &amp; memories</h2>
+                    </div>
+                    <div class="cards cols-2">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Pull precise context</h3>
+                            <p>
+                                <code>@Files</code> <code>@Folders</code>
+                                <code>@Code</code> <code>@Docs</code>
+                                <code>@Web</code> <code>@Git</code>
+                                <code>@Linear</code>, attach exactly what
+                                matters.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Codebase indexing</h3>
+                            <p>
+                                Embeds your repo for semantic search, "find the
+                                auth handler" works without exact names. Scope
+                                it with <code>.cursorignore</code>.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Memories</h3>
+                            <p>
+                                Per-project facts Cursor remembers across chats
+                                , stop re-explaining your conventions.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Custom @Docs</h3>
+                            <p>
+                                Index your internal &amp; library docs so
+                                answers cite your real APIs.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Indexing makes the Agent feel like it "knows" your
+                        codebase — semantic, not grep. Keep secrets and build
+                        output out with .cursorignore.
+                    </aside>
+                </section>
+
+                <!-- ====================== 24 · CLOUD AGENTS & BUGBOT ============== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Work that runs without you</span>
+                        <h2>Cloud Agents &amp; Bugbot</h2>
+                    </div>
+                    <div class="cols vcenter">
+                        <div class="col">
+                            <div class="label">Cloud (background) agents</div>
+                            <p>
+                                Autonomous agents in isolated cloud VMs, they
+                                build, test, drive a browser, and open
+                                <strong>merge-ready PRs</strong> with
+                                screenshots &amp; logs.
+                            </p>
+                            <div class="tags" style="margin-top: 16px">
+                                <span class="tag">@cursor in Slack</span>
+                                <span class="tag">GitHub / Linear</span>
+                                <span class="tag">Web &amp; mobile</span>
+                            </div>
+                            <p class="tiny muted" style="margin-top: 16px">
+                                A backlog item can become a draft PR before you
+                                sit down.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="label">Bugbot, AI code review</div>
+                            <p>
+                                Reviews every PR diff and leaves inline comments
+                                with fixes, regressions, missing error handling,
+                                security issues, on human
+                                <em>and</em> agent-authored PRs.
+                            </p>
+                            <p class="callout" style="margin-top: 16px">
+                                Treat agent output like a junior dev's PR:
+                                <strong>always review &amp; gate on CI.</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Where "agents at scale" gets real — and why automated
+                        review matters: when agents open PRs, you need an agent
+                        helping review them, plus a human owning the merge.
+                    </aside>
+                </section>
+
+                <!-- ====================== 25 · MCP, CLI & MODELS ================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Extend &amp; automate</span>
+                        <h2>MCP, CLI &amp; models</h2>
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>MCP</h3>
+                            <p>
+                                Connect external tools via
+                                <code>.cursor/mcp.json</code> — one-click
+                                install from the marketplace.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Cursor CLI</h3>
+                            <p>
+                                <code>cursor-agent</code> brings the agent to
+                                your terminal &amp; CI, interactive or scripted.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Multi-model + Auto</h3>
+                            <p>
+                                Claude, GPT, Gemini, Composer.
+                                <strong>Auto</strong> picks for you,
+                                <strong>Max Mode</strong> maxes the context
+                                window.
+                            </p>
+                        </div>
+                    </div>
+                    <p class="small muted" style="margin-top: 22px">
+                        Curate which MCP tools are enabled, agents do better
+                        with a focused toolset than a huge one.
+                    </p>
+                    <aside class="notes">
+                        Same MCP standard as Claude Code, so servers are
+                        reusable across both. Auto is a sensible cost default;
+                        switch to a frontier model when a task needs it.
+                    </aside>
+                </section>
+
+                <!-- ====================== 26 · WHAT'S NEW (CURSOR) ================ -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Worth trying now</span>
+                        <h2>Newer in Cursor</h2>
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Parallel agents</h3>
+                            <p>
+                                Run many agents side-by-side across repos —
+                                local, git <em>worktrees</em>, or cloud.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>
+                                <code>/worktree</code> &amp;
+                                <code>/best-of-n</code>
+                            </h3>
+                            <p>
+                                Isolate each task; run one task on several
+                                models and pick the winner.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Browser &amp; Design mode</h3>
+                            <p>
+                                Agents test in a built-in browser, click or
+                                describe a UI change and it edits the code.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Cloud ↔ local handoff</h3>
+                            <p>
+                                Start in the cloud, finish locally, or the
+                                reverse, seamlessly.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Automations</h3>
+                            <p>
+                                Scheduled &amp; event-triggered agents for
+                                recurring work.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Team controls</h3>
+                            <p>
+                                Shared rules, analytics, privacy mode, SSO,
+                                pooled usage.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        The headline of recent releases is parallelism — a fleet
+                        of agents across worktrees, even racing models with
+                        best-of-n. Design mode is a genuinely new interaction.
+                    </aside>
+                </section>
+
+                <!-- ====================== 27 · DIVIDER: SYNTHESIS ================= -->
+                <section
+                    class="divider dark mid"
+                    data-background-color="#000000"
+                >
+                    <div class="dnum">Part 03</div>
+                    <h2>Putting it to work</h2>
+                    <div class="drule"></div>
+                    <p class="dsub">
+                        When to use which, the principles that transfer between
+                        both, and how we adopt them as a team.
+                    </p>
+                    <aside class="notes">
+                        Pivot from features to practice. This is the part people
+                        will act on.
+                    </aside>
+                </section>
+
+                <!-- ============================ 28 · COMPARISON =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Not either / or</span>
+                        <h2>When to reach for which</h2>
+                        <p class="sub">
+                            They overlap a lot, and many devs use both. A rough
+                            guide:
+                        </p>
+                    </div>
+                    <table class="compare">
+                        <thead>
+                            <tr>
+                                <th>If you want…</th>
+                                <th>
+                                    <span class="hd"
+                                        ><span class="d d-claude"></span>Claude
+                                        Code</span
+                                    >
+                                </th>
+                                <th>
+                                    <span class="hd"
+                                        ><span class="d d-cursor"></span
+                                        >Cursor</span
+                                    >
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Primary surface</td>
+                                <td>Terminal-first, IDE &amp; CI too</td>
+                                <td>A full AI-native editor</td>
+                            </tr>
+                            <tr>
+                                <td>In-editor flow</td>
+                                <td>Inline diffs via extension</td>
+                                <td>Tab + ⌘K are the core strength</td>
+                            </tr>
+                            <tr>
+                                <td>Big agentic tasks</td>
+                                <td>Sub-agents, hooks, deep CLI control</td>
+                                <td>Agent + parallel agents &amp; worktrees</td>
+                            </tr>
+                            <tr>
+                                <td>Automation / CI</td>
+                                <td>Headless <code>-p</code> + Agent SDK</td>
+                                <td>Cloud Agents, Bugbot, CLI</td>
+                            </tr>
+                            <tr>
+                                <td>Team config lives in</td>
+                                <td>
+                                    <code>CLAUDE.md</code> +
+                                    <code>.claude/</code>
+                                </td>
+                                <td>
+                                    <code>.cursor/rules</code> ·
+                                    <code>AGENTS.md</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        Not a fight. Many teams keep Cursor as the editor and
+                        use Claude Code in the terminal and CI.
+                        Terminal/automation-heavy → Claude Code; editor-flow
+                        heavy → Cursor.
+                    </aside>
+                </section>
+
+                <!-- ====================== 29 · UNIVERSAL BEST PRACTICES =========== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">The transferable skills</span>
+                        <h2>Principles that work in both</h2>
+                    </div>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Give it a way to verify</h3>
+                            <p>
+                                Tests, build, types, a screenshot to diff. The
+                                loop closes itself.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Plan before big changes</h3>
+                            <p>
+                                Separate understanding from doing. Review the
+                                plan first.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Be specific; show examples</h3>
+                            <p>
+                                Point at the file to copy. Vague in → vague out.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Commit your rules</h3>
+                            <p>
+                                CLAUDE.md / .cursor/rules in git, context that
+                                compounds.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Manage context</h3>
+                            <p>
+                                Clear between tasks, delegate big reads to
+                                sub-agents.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <span class="rule"></span>
+                            <h3>Review everything</h3>
+                            <p>
+                                You own the merge. Read the diff like a
+                                teammate's PR.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        These six transfer to whatever tool wins next year.
+                        They're skills, not settings — get good at them and
+                        switching tools is trivial.
+                    </aside>
+                </section>
+
+                <!-- ==================== 29b · AI SLOP (SYMPTOMS) =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Quality · the risk</span>
+                        <h2>Watch for AI slop</h2>
+                    </div>
+                    <div class="cols w-46 vcenter">
+                        <div class="col">
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Over-engineering</h3>
+                                    <p>Needless layers and config.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Reinvented wheels</h3>
+                                    <p>Duplicates code you already have.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Plausible but wrong</h3>
+                                    <p>Compiles and reads well, wrong logic.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Invented APIs</h3>
+                                    <p>Calls things that do not exist.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Unreviewable diffs</h3>
+                                    <p>Too big for anyone to actually read.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Off house-style</h3>
+                                    <p>Ignores conventions, leaves dead code.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <figure class="tweet">
+                                <img
+                                    src="assets/img/outsource-understanding.png"
+                                    alt="Andrej Karpathy, quoting kache: you can outsource your thinking but you cannot outsource your understanding."
+                                />
+                            </figure>
+                            <p class="small muted" style="margin-top: 14px">
+                                Why every item on the left needs a human who
+                                still understands the change.
+                            </p>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Slop is not a model problem you wait out, it is a
+                        direction-and-review problem you manage. Karpathy's point
+                        is the whole game, you can hand off the typing but not
+                        the understanding.
+                    </aside>
+                </section>
+
+                <!-- ==================== 29c · AI SLOP (DEFENSES) =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">Quality · the defense</span>
+                        <h2>How to keep it clean</h2>
+                    </div>
+                    <div class="cols vcenter">
+                        <div class="col">
+                            <div class="label">Steer it, before it writes</div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Point at a pattern</h3>
+                                    <p>
+                                        "Follow how PaymentService does it"
+                                        beats "add a service".
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Reuse, do not reinvent</h3>
+                                    <p>
+                                        Ask it to find and use what already
+                                        exists first.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Smallest change that works</h3>
+                                    <p>
+                                        One concern per task. Resist refactoring
+                                        the world.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="label">Gate it, before you merge</div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Make it verify</h3>
+                                    <p>
+                                        Tests, types, lint, and build. Wrong
+                                        code should fail loudly.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Read the diff like a PR</h3>
+                                    <p>
+                                        You own the merge. Skim-and-approve is
+                                        how slop ships.
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <h3>Run the reviewers</h3>
+                                    <p>
+                                        <code>/code-review</code> and
+                                        <code>/security-review</code>, or
+                                        Cursor's Bugbot.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <p class="callout">
+                        The fix is not less AI. It is tighter direction up front
+                        and honest review at the end.
+                    </p>
+                    <aside class="notes">
+                        Tie it back to the loop: a hard verifier plus a real
+                        review is what turns a fast draft into something you
+                        trust in main.
+                    </aside>
+                </section>
+
+                <!-- ====================== 30 · ADOPTION ROADMAP =================== -->
+                <section>
+                    <div class="head">
+                        <span class="kicker">How we roll it out</span>
+                        <h2>A 30-day adoption path</h2>
+                    </div>
+                    <div class="cols">
+                        <div class="col">
+                            <div class="label">The path</div>
+                            <div class="rows">
+                                <div class="row num">
+                                    <span class="rnum">1</span>
+                                    <div class="rtext">
+                                        <h3>Week 1 — Foundations</h3>
+                                        <p>
+                                            Install for all. Commit a shared
+                                            CLAUDE.md / rules. Allowlist safe
+                                            commands.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row num">
+                                    <span class="rnum">2</span>
+                                    <div class="rtext">
+                                        <h3>Week 2–3 — Real work</h3>
+                                        <p>
+                                            One bug, one feature each. Pool
+                                            gotchas back into the rules.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row num">
+                                    <span class="rnum">3</span>
+                                    <div class="rtext">
+                                        <h3>Month 2+ — Scale</h3>
+                                        <p>
+                                            MCP to Jira/GitHub, a shared skill,
+                                            CI automation, a team workshop.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="label">Avoid these</div>
+                            <div class="rows">
+                                <div class="row">
+                                    <h3>Merging unread diffs</h3>
+                                    <p>Speed you can't review isn't speed.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>One giant mega-prompt</h3>
+                                    <p>Break work down; clear between tasks.</p>
+                                </div>
+                                <div class="row">
+                                    <h3>Skipping the setup</h3>
+                                    <p>
+                                        No rules = re-explaining yourself
+                                        forever.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="notes">
+                        Make it concrete: I'll set up the shared CLAUDE.md /
+                        rules this week. The compounding asset is the rules file
+                        — every gotcha makes future sessions better.
+                    </aside>
+                </section>
+
+                <!-- ============================ 31 · TAKEAWAYS ==================== -->
+                <section class="mid">
+                    <div class="head">
+                        <span class="kicker">In one breath</span>
+                        <h2>If you remember three things</h2>
+                    </div>
+                    <div class="takeaways">
+                        <div class="takeaway">
+                            <div class="num">01</div>
+                            <div class="tk">
+                                <b>Direct the loop.</b> Always give the agent
+                                something to verify against.
+                            </div>
+                        </div>
+                        <div class="takeaway">
+                            <div class="num">02</div>
+                            <div class="tk">
+                                <b>Context is the budget.</b> Be specific, plan
+                                first, clear often, delegate.
+                            </div>
+                        </div>
+                        <div class="takeaway">
+                            <div class="num">03</div>
+                            <div class="tk">
+                                <b>Set it up &amp; review the output.</b> Commit
+                                your rules; own every merge.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer lg"></div>
+                    <div class="cols">
+                        <div class="col">
+                            <div class="label">Docs to bookmark</div>
+                            <p class="small">
+                                <a href="https://code.claude.com/docs"
+                                    >code.claude.com/docs</a
+                                >
+                                &nbsp;·&nbsp;
+                                <a href="https://cursor.com/docs"
+                                    >cursor.com/docs</a
+                                >
+                            </p>
+                        </div>
+                        <div class="col">
+                            <div class="label">Your next step</div>
+                            <p class="small muted">
+                                Pick one real task this week and run it
+                                end-to-end with an agent.
+                            </p>
+                        </div>
+                    </div>
+                    <p
+                        style="
+                            margin-top: 28px;
+                            font-family: var(--display);
+                            text-transform: uppercase;
+                            font-size: 30px;
+                            color: var(--ink);
+                        "
+                    >
+                        Thanks — questions?
+                    </p>
+                    <aside class="notes">
+                        Land on the three things. Then open it up — ask which
+                        real task each person will try this week, and offer to
+                        pair on the first one.
+                    </aside>
+                </section>
+            </div>
+            <!-- /.slides -->
+        </div>
+        <!-- /.reveal -->
+
+        <!-- minimal progress bar (viewport-fixed, outside .reveal) -->
+        <div class="deck-progress" aria-hidden="true">
+            <div class="deck-progress__fill"></div>
+        </div>
+
+        <!-- reveal.js core + plugins (vendored) -->
+        <script src="vendor/reveal/reveal.js"></script>
+        <script src="vendor/reveal/plugin/highlight.js"></script>
+        <script src="vendor/reveal/plugin/notes.js"></script>
+        <script src="vendor/reveal/plugin/zoom.js"></script>
+        <script src="assets/js/deck.js"></script>
+    </body>
+</html>
